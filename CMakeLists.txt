@@ -36,6 +36,9 @@ add_executable(client
   src/client/SpriteRender.h
   src/client/Enviroment.cpp
   src/client/Enviroment.h
+  src/client/SendData.cpp
+  src/client/SendData.h
+
 
 )
 

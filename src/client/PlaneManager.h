@@ -29,7 +29,7 @@ public:
     void UpdateData(std::vector<std::string> &info);
 
 private:
-      friend class SendData;
+      //friend class SendData;
 
       WsTcpSocket *client;
 

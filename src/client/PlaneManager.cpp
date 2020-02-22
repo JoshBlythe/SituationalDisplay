@@ -61,7 +61,7 @@ void PlaneManager::StateProcessPacket()
 //                //UpdateData(plane, token);
 //            }
 
-        printf("[%s]\n", packet.c_str());
+        //printf("[%s]\n", packet.c_str());
         for (size_t i = 0; i < planes.size(); i++)
         {
             std::cout << planes.size() << std::endl;
