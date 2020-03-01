@@ -28,10 +28,13 @@ public:
     void AddNewData(std::vector<std::string> &info);
     void UpdateData(std::vector<std::string> &info);
 
+    void Send();
+
 private:
-      //friend class SendData;
+      friend class SendData;
 
       WsTcpSocket *client;
+      WsTcpSocket *SendData;
 
       vector(unsigned char) buffer;
       //vector(unsigned char) stream;

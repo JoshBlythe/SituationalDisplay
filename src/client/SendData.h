@@ -1,11 +1,15 @@
 #ifndef _SENDDATA_H
 #define _SENDDATA_H
 
-//#include "WebSocket.h"
+//#include "HandleWebSocket.h"
+//#include "PlaneManager.h"
 
-#include "inc/stent.h"
+#include <string>
+#include <iostream>
 
-struct WsServer;
+#include "TcpSocket.h"
+
+struct WsTcpSocket;
 
 class SendData
 {
@@ -17,10 +21,15 @@ public:
     void sendData();
 
 private:
-   // WsServer* server;
+    WsTcpSocket *server;
+    WsTcpSocket *clientConnected;
+
+    //PlaneManager planeData;
+    //WsServer* server;
     vector(unsigned char) data;
+    //char *maybe;
 
-
+    //std::string please;
 };
 
 #endif

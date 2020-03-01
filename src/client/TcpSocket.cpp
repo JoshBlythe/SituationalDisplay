@@ -30,10 +30,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-
-//#define SERVER_HOST "localhost"
-//#define SERVER_PORT 30003
-
 #ifdef _WIN32
   #define MSG_NOSIGNAL 0
 #else

@@ -1,13 +1,10 @@
 #ifndef WS_TCPSOCKET_H
 #define WS_TCPSOCKET_H
 
-
-
 #include "inc/stent.h"
 //#include <stdbool.h>
 //#include <stdio.h>
 //#include <stdlib.h>
-
 
 struct WsTcpSocket;
 

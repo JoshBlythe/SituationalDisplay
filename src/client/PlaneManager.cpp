@@ -1,12 +1,14 @@
 #include "PlaneManager.h"
 #include "inc/util.h"
 
-#include <sstream>
+//#include <sstream>
 #include <stdlib.h>
 
 #define SERVER_HOST "localhost"
 #define SERVER_PORT 30003
 #define RECV_BUFFER 4096
+
+#define SEND_DATA 8080
 
 
 PlaneManager::PlaneManager()
@@ -41,12 +43,13 @@ void PlaneManager::StateProcessPacket()
 
     //printf("[%s]\n", token.at(4).c_str());
 
-
+    //check if vector is empty
     if(planes.empty())
     {
+        //if is store the first plane
         StoreData(token);
     }
-
+    //could optimse this more, check the hex id here instead of going into the function to do it.
     AddNewData(token);
 
     UpdateData(token);
@@ -212,6 +215,7 @@ void PlaneManager::UpdateData(std::vector<std::string> &info)
 //                printf("[%s]\n", info.at(i).c_str());
 //            }
 }
+
 
 void PlaneManager::StateProcessNetwork()
 {

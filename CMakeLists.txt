@@ -39,7 +39,6 @@ add_executable(client
   src/client/SendData.cpp
   src/client/SendData.h
 
-
 )
 
 if(WIN32)

@@ -3,18 +3,21 @@
 
 //#include "PlaneManager.h"
 #include "Display.h"
-//#include "SendData.h"
+#include "SendData.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <libwebsockets.h>
 
 //struct WsTcpSocket;
 
 int main(int argv, char* argc[])
 {
-    PlaneManager manger;
+    //PlaneManager manger;
+    SendData httpSend;
    //Display *display = new Display(argv, argc);
-
-
-
     //display->InitWindow();
 
     //display->RunDisplay();
@@ -32,7 +35,9 @@ int main(int argv, char* argc[])
             }
         }
 
-        manger.StateProcessNetwork();
+        //manger.StateProcessNetwork();
+        //manger.Send();
+        httpSend.sendData();
     }
 
     return 0;
