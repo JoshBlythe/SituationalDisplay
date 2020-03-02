@@ -4,10 +4,13 @@
 //#include "HandleWebSocket.h"
 //#include "PlaneManager.h"
 
+#include <fstream>
+#include <jsoncpp/json/json.h>
+#include <jsoncpp/json/writer.h>
 #include <string>
 #include <iostream>
 
-#include "TcpSocket.h"
+#include "PlaneManager.h"
 
 struct WsTcpSocket;
 
@@ -29,7 +32,7 @@ private:
     vector(unsigned char) data;
     //char *maybe;
 
-    //std::string please;
+
 };
 
 #endif

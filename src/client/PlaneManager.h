@@ -5,6 +5,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <jsoncpp/json/json.h>
+#include <jsoncpp/json/writer.h>
 
 
 #include "PlaneData.h"
@@ -28,7 +30,7 @@ public:
     void AddNewData(std::vector<std::string> &info);
     void UpdateData(std::vector<std::string> &info);
 
-    void Send();
+    void convertData();
 
 private:
       friend class SendData;
@@ -45,8 +47,10 @@ private:
       std::vector<unsigned char> stream;
       //std::vector<std::string> _tokens;
       std::string message;
+      std::string toSend;
 
       std::vector<PlaneData> planes;
+      std::vector<std::string> jsonConverted;
 
 };
 

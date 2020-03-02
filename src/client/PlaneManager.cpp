@@ -64,21 +64,23 @@ void PlaneManager::StateProcessPacket()
 //                //UpdateData(plane, token);
 //            }
 
-        //printf("[%s]\n", packet.c_str());
-        for (size_t i = 0; i < planes.size(); i++)
-        {
-            std::cout << planes.size() << std::endl;
-            printf("[%s]\n", planes.at(i).hexID.c_str());
-            std::cout << "["<< planes.at(i).latitude << "]" << std::endl;
-            std::cout << "["<< planes.at(i).longitute << "]" << std::endl;
-            //printf("[%f]\n", planes.at(i).latitude);
-            //printf("[%f]\n", planes.at(i).longitute);
-            printf("[%i]\n", planes.at(i).groundSpeed);
-            printf("[%i]\n", planes.at(i).trueHeading);
-            printf("[%i]\n", planes.at(i).verticalHeading);
-            printf("[%i]\n", planes.at(i).airborneState);
 
-        }
+    //output the stored infomation
+        //printf("[%s]\n", packet.c_str());
+//        for (size_t i = 0; i < planes.size(); i++)
+//        {
+//            std::cout << planes.size() << std::endl;
+//            printf("[%s]\n", planes.at(i).hexID.c_str());
+//            printf("[%i]\n", planes.at(i).verticalHeading);
+//            printf("[%i]\n", planes.at(i).groundSpeed);
+//            std::cout << "["<< planes.at(i).latitude << "]" << std::endl;
+//            std::cout << "["<< planes.at(i).longitute << "]" << std::endl;
+//            //printf("[%f]\n", planes.at(i).latitude);
+//            //printf("[%f]\n", planes.at(i).longitute);
+//            printf("[%i]\n", planes.at(i).trueHeading);
+//            printf("[%i]\n", planes.at(i).airborneState);
+
+//        }
 
     //TODO:
     //The first two section read in are the Message type (MSG,AIR, ID)
@@ -214,6 +216,55 @@ void PlaneManager::UpdateData(std::vector<std::string> &info)
 //                //std::cout << token.at(i) << std::endl;
 //                printf("[%s]\n", info.at(i).c_str());
 //            }
+}
+
+void PlaneManager::convertData()
+{
+    //TODO: if the message are no longer being received then remove them from list, similar to reading in the data in link above
+
+
+    if(planes.empty())
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < planes.size(); i++)
+    {
+        Json::Value root;
+        Json::Value data;
+
+        data["lat"] = planes.at(i).latitude;
+        data["long"] = planes.at(i).longitute;
+        data["altitude"] = planes.at(i).verticalHeading;
+        data["speed"] = planes.at(i).groundSpeed;
+        data["heading"] = planes.at(i).trueHeading;
+
+        root["Hexideimal"] = planes.at(i).hexID.c_str();
+        //root.append(data);
+        root["data"] = data;
+
+        //jsonConverted.push_back(root);
+        toSend = root.toStyledString();
+        jsonConverted.push_back(toSend);
+
+    }
+
+    if(jsonConverted.empty())
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < jsonConverted.size(); i++)
+    {
+        //toSend = jsonConverted.at(i).toStyledString();
+        std::cout << jsonConverted.at(i) << std::endl;
+    }
+
+    //toSend = root.toStyledString();
+
+    //std::cout << root << std::endl;
+
+
 }
 
 

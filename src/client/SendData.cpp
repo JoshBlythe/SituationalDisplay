@@ -24,31 +24,11 @@ SendData::~SendData()
     WsTcpSocketClose(server);
 }
 
-void SendData::convertData()
-{
-
-    //TODO :
-    //USE JSON TO CONVERT THE DATA INTO A VECTOR
-    //Send that vector along down the socket
-
-    //PlaneManager plane;
-
-//    if(plane.planes.size() == 0)
-//    {
-//        return;
-//    }
-
-//    for (size_t i = 0; i < plane.planes.size(); i++)
-//    {
-
-//    }
-
-}
-
 void SendData::sendData()
 {
+    PlaneManager aircraftData;
     char si = 0;
-    std::string please = "hello";
+    //std::string please = "hello";
 
     struct WsTcpSocket *socket = NULL;
 
@@ -86,22 +66,19 @@ void SendData::sendData()
         printf("Client Connected\n");
         clientConnected = WsTcpSocketAccept(socket);
 
-        //memcpy(data, maybe, sizeof (data));
 
-        //vector_push_back(data, 'A');
-        //vector_push_back(data, 'P');
-        //vector_push_back(data, 'P');
-        //vector_push_back(data, 'L');
-        //vector_push_back(data, 'E');
-
-
-        for (size_t i = 0; i < please.size(); i++)
+        for (size_t i = 0; i < aircraftData.toSend.size(); i++)
         {
-            si = please.at(i);
-
-            vector_push_back(data, si);
-
+            //std::string *curr = &aircraftData.toSend.at(i);
         }
+
+//        for (size_t i = 0; i < please.size(); i++)
+//        {
+//            si = please.at(i);
+
+//            vector_push_back(data, si);
+
+//        }
 
 
         WsTcpSocketSend(clientConnected, data);
