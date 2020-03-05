@@ -254,6 +254,7 @@ void PlaneManager::convertData()
         return;
     }
 
+
     for (size_t i = 0; i < jsonConverted.size(); i++)
     {
         //toSend = jsonConverted.at(i).toStyledString();

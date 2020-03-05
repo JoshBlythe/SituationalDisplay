@@ -4,13 +4,13 @@
 //#include "HandleWebSocket.h"
 //#include "PlaneManager.h"
 
-#include <fstream>
 #include <jsoncpp/json/json.h>
-#include <jsoncpp/json/writer.h>
+//#include <jsoncpp/json/writer.h>
 #include <string>
 #include <iostream>
 
 #include "PlaneManager.h"
+//#include "TcpSocket.h"
 
 struct WsTcpSocket;
 
@@ -25,7 +25,6 @@ public:
 
 private:
     WsTcpSocket *server;
-    WsTcpSocket *clientConnected;
 
     //PlaneManager planeData;
     //WsServer* server;

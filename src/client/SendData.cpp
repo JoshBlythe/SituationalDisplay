@@ -26,11 +26,21 @@ SendData::~SendData()
 
 void SendData::sendData()
 {
-    PlaneManager aircraftData;
-    char si = 0;
-    //std::string please = "hello";
+    std::vector<std::string> testingString;
+
+    char sc = 0;
+    std::string please = "name: ";
+
+    for (int i = 0; i < 5; i++)
+    {
+       please[3] = i;
+       testingString.push_back(please);
+    }
+
+
 
     struct WsTcpSocket *socket = NULL;
+    struct WsTcpSocket *clientConnected = NULL;
 
     if(clientConnected)
     {
@@ -67,29 +77,55 @@ void SendData::sendData()
         clientConnected = WsTcpSocketAccept(socket);
 
 
-        for (size_t i = 0; i < aircraftData.toSend.size(); i++)
-        {
-            //std::string *curr = &aircraftData.toSend.at(i);
-        }
+        //size_t length = aircraftData.toSend.size();
+//        PlaneManager aircraftData;
 
+//        for (size_t i = 0; i < aircraftData.toSend.size(); i++)
+//        {
+
+//            std::string cur = &aircraftData.toSend.at(i);
+
+//            for (size_t c = 0; c < cur.size(); c++)
+//            {
+//                sc = cur.at(i);
+
+//                vector_push_back(data, sc);
+//            }
+
+//            //std::string *curr = &aircraftData.toSend.at(i);
+//        }
+
+//        WsTcpSocketSend(clientConnected, data);
 //        for (size_t i = 0; i < please.size(); i++)
 //        {
-//            si = please.at(i);
+//            sc = please.at(i);
 
-//            vector_push_back(data, si);
+//            vector_push_back(data, sc);
 
 //        }
 
 
+//        WsTcpSocketSend(clientConnected, data);
+
+        size_t lenght = 0;
+        lenght = testingString.size();
+
+        for (size_t i = 0; i < lenght; i++)
+        {
+            std::string curr = testingString[i];
+
+            for (size_t c = 0; c < curr.size(); c++)
+            {
+                sc = curr.at(c);
+                vector_push_back(data, sc);
+            }
+
+        }
+
         WsTcpSocketSend(clientConnected, data);
 
-    }
 
-    //if(WsTcpSocketReady(server))
-    //{
-      //  WsTcpSocketAccept(server);
-        //send the data to down the port
-    //}
+    }
 }
 
 

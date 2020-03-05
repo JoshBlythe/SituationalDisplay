@@ -30,9 +30,26 @@
   </head>
 
 
+<p>Image to use:</p>
+<img id="scream" width="220" height="277" src="plane.jpg" alt="The Scream">
+
+<p>Canvas:</p>
+
+<canvas id="myCanvas" width="240" height="297" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<script>
+window.onload = function() {
+  var c = document.getElementById("myCanvas");
+  var ctx = c.getContext("2d");
+  var img = document.getElementById("plane");
+  ctx.drawImage(img, 10, 10, 150, 180);
+};
+</script>
+
 <body>
 <h1 id="head1"> Check PHP </h1>
-
       <?php
             //session_start();
 
@@ -77,8 +94,8 @@
 
 
     <script type="text/javascript">
+    //get data from php above and display it using javascript
         var dataSent = <?php echo json_encode($result); ?>;
-
 
         var element = document.getElementById("head1");
         element.innerHTML = dataSent;
@@ -88,8 +105,11 @@
 
 </body>
 
- <body onload="init();">
-    <div id="basicMap"></div>
-  </body>
+
+<body onload="init();">
+   <div id="basicMap"></div>
+ </body>
+
+
 
 </html>
