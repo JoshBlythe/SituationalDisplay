@@ -253,6 +253,7 @@ void PlaneManager::convertData()
         {
             for (size_t c = 0; c < jsonConverted.size(); c++)
             {
+                //if current value is equal to 
                 //if()
             }
         }

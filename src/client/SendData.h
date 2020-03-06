@@ -25,6 +25,7 @@ public:
 
 private:
     WsTcpSocket *server;
+    PlaneManager *aircraftData;
 
     //PlaneManager planeData;
     //WsServer* server;

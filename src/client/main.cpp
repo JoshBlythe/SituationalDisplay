@@ -15,7 +15,7 @@
 
 int main(int argv, char* argc[])
 {
-   //PlaneManager *manger = new PlaneManager();
+   PlaneManager *manger = new PlaneManager();
    SendData *httpSend = new SendData();
    //Display *display = new Display(argv, argc);
     //display->InitWindow();
@@ -35,8 +35,8 @@ int main(int argv, char* argc[])
             }
         }
         //obtain data from dump1090 server/ seperate it and store it
-        //manger->StateProcessNetwork();
-        //manger->convertData();
+        manger->StateProcessNetwork();
+        manger->convertData();
 
         //send the data via tcp server to web application
         httpSend->sendData();
