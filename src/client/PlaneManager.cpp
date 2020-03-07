@@ -34,14 +34,10 @@ PlaneManager::~PlaneManager()
 void PlaneManager::StateProcessPacket()
 {
     std::vector<std::string> token;
-    //PlaneData plane;
+
     //output message read in.
     //printf("[%s]\n", packet.c_str());
     SplitStringOnCharacter(packet,',', token, 4);
-
-    //printf("[%s]\n", token.c_str());
-
-    //printf("[%s]\n", token.at(4).c_str());
 
     //check if vector is empty
     if(planes.empty())
@@ -51,19 +47,8 @@ void PlaneManager::StateProcessPacket()
     }
     //could optimse this more, check the hex id here instead of going into the function to do it.
     AddNewData(token);
-
+    //call update function
     UpdateData(token);
-
-//            if(planes.at(i).hexID == token.at(4))
-//            {
-//                planes.at(i).verticalHeading = std::atoi(token.at(11).c_str());
-//                planes.at(i).groundSpeed = std::atoi(token.at(12).c_str());
-//                planes.at(i).trueHeading = std::atoi(token.at(13).c_str());
-//                planes.at(i).latitude = std::atoi(token.at(14).c_str());
-//                planes.at(i).longitute = std::atoi(token.at(15).c_str());
-//                //UpdateData(plane, token);
-//            }
-
 
     //output the stored infomation
         //printf("[%s]\n", packet.c_str());
@@ -71,14 +56,14 @@ void PlaneManager::StateProcessPacket()
 //        {
 //            std::cout << planes.size() << std::endl;
 //            printf("[%s]\n", planes.at(i).hexID.c_str());
-//            printf("[%i]\n", planes.at(i).verticalHeading);
-//            printf("[%i]\n", planes.at(i).groundSpeed);
+//            printf("[%s]\n", planes.at(i).verticalHeading.c_str());
+//            printf("[%s]\n", planes.at(i).groundSpeed.c_str());
 //            std::cout << "["<< planes.at(i).latitude << "]" << std::endl;
 //            std::cout << "["<< planes.at(i).longitute << "]" << std::endl;
 //            //printf("[%f]\n", planes.at(i).latitude);
 //            //printf("[%f]\n", planes.at(i).longitute);
-//            printf("[%i]\n", planes.at(i).trueHeading);
-//            printf("[%i]\n", planes.at(i).airborneState);
+//            printf("[%s]\n", planes.at(i).trueHeading.c_str());
+//            printf("[%s]\n", planes.at(i).airborneState.c_str());
 
 //        }
 
@@ -110,12 +95,13 @@ void PlaneManager::StoreData(std::vector<std::string> &info)
     PlaneData plane;
 
     plane.hexID = info.at(4);
-    plane.verticalHeading = std::atoi(info.at(11).c_str());
-    plane.groundSpeed = std::atoi(info.at(12).c_str());
-    plane.trueHeading = std::atoi(info.at(13).c_str());
-    plane.latitude = std::atof(info.at(14).c_str());
-    plane.longitute = std::atof(info.at(15).c_str());
+    plane.verticalHeading = info.at(11).c_str();
+    plane.groundSpeed = info.at(12).c_str();
+    plane.trueHeading = info.at(13).c_str();
+    plane.latitude = info.at(14).c_str();
+    plane.longitute = info.at(15).c_str();
 
+    //std::atof(info.at(15).c_str())
     //TODO: Check if this works.
     //could use this
     //std::stof(info.at(14));
@@ -138,14 +124,15 @@ void PlaneManager::AddNewData(std::vector<std::string> &info)
     PlaneData plane;
 
     plane.hexID = info.at(4);
-    plane.verticalHeading = std::atoi(info.at(11).c_str());
-    plane.groundSpeed = std::atoi(info.at(12).c_str());
-    plane.trueHeading = std::atoi(info.at(13).c_str());
-    plane.latitude = std::atof(info.at(14).c_str());
-    plane.longitute = std::atof(info.at(15).c_str());
+    plane.verticalHeading = info.at(11).c_str();
+    plane.groundSpeed = info.at(12).c_str();
+    plane.trueHeading = info.at(13).c_str();
+    plane.latitude = info.at(14).c_str();
+    plane.longitute = info.at(15).c_str();
 
     //TODO:
     // if 21 = "" then continue else update it.
+    //std::atoi(info.at(13).c_str());
     //plane.airborneState = std::atoi(info.at(21).c_str());
 
 
@@ -162,31 +149,32 @@ void PlaneManager::UpdateData(std::vector<std::string> &info)
             {
                 if(info.at(1) == "2")
                 {
-                    planes.at(i).verticalHeading = std::atoi(info.at(11).c_str());
-                    planes.at(i).groundSpeed = std::atoi(info.at(12).c_str());
-                    planes.at(i).trueHeading = std::atoi(info.at(13).c_str());
-                    planes.at(i).latitude = std::atof(info.at(14).c_str());
-                    planes.at(i).longitute = std::atof(info.at(15).c_str());
-                    planes.at(i).airborneState = std::atoi(info.at(21).c_str());
+                    //planes.at(i).verticalHeading = std::atoi(info.at(11).c_str());
+                    planes.at(i).verticalHeading = info.at(11).c_str();
+                    planes.at(i).groundSpeed = info.at(12).c_str();
+                    planes.at(i).trueHeading = info.at(13).c_str();
+                    planes.at(i).latitude = info.at(14).c_str();
+                    planes.at(i).longitute = info.at(15).c_str();
+                    planes.at(i).airborneState = info.at(21).c_str();
                 }
 
                 if(info.at(1) == "3")
                 {
-                    planes.at(i).verticalHeading = std::atoi(info.at(11).c_str());
-                    planes.at(i).latitude = std::atof(info.at(14).c_str());
-                    planes.at(i).longitute = std::atof(info.at(15).c_str());
-                    planes.at(i).airborneState = std::atoi(info.at(21).c_str());
+                    planes.at(i).verticalHeading = info.at(11).c_str();
+                    planes.at(i).latitude = info.at(14).c_str();
+                    planes.at(i).longitute = info.at(15).c_str();
+                    planes.at(i).airborneState = info.at(21).c_str();
                 }
 
                 if(info.at(1) == "4")
                 {
-                    planes.at(i).groundSpeed = std::atoi(info.at(12).c_str());
-                    planes.at(i).trueHeading = std::atoi(info.at(13).c_str());
+                    planes.at(i).groundSpeed = info.at(12).c_str();
+                    planes.at(i).trueHeading = info.at(13).c_str();
                 }
 
                 if(info.at(1) == "5")
                 {
-                    planes.at(i).verticalHeading = std::atoi(info.at(11).c_str());
+                    planes.at(i).verticalHeading = info.at(11).c_str();
                     //planes.at(i).airborneState = std::atoi(info.at(21).c_str());
                 }
 
@@ -198,7 +186,7 @@ void PlaneManager::UpdateData(std::vector<std::string> &info)
 
                 if(info.at(1) == "7")
                 {
-                    planes.at(i).verticalHeading = std::atoi(info.at(11).c_str());
+                    planes.at(i).verticalHeading = info.at(11).c_str();
                     //planes.at(i).airborneState = std::atoi(info.at(21).c_str());
                 }
 
@@ -218,61 +206,33 @@ void PlaneManager::UpdateData(std::vector<std::string> &info)
 //            }
 }
 
-void PlaneManager::convertData()
+std::string PlaneManager::convertData(std::vector<PlaneData> info, size_t c)
 {
     //TODO: if the message are no longer being received then remove them from list, similar to reading in the data in link above
 
+    std::string prepToSend;
+    Json::Value root;
+    Json::Value data;
 
-    if(planes.empty())
-    {
-        return;
-    }
-
-    for (size_t i = 0; i < planes.size(); i++)
-    {
-        Json::Value root;
-        Json::Value data;
-
-        if(jsonConverted.empty())
-        {
-            data["lat"] = planes.at(i).latitude;
-            data["long"] = planes.at(i).longitute;
-            data["altitude"] = planes.at(i).verticalHeading;
-            data["speed"] = planes.at(i).groundSpeed;
-            data["heading"] = planes.at(i).trueHeading;
-
-            root["Hexideimal"] = planes.at(i).hexID.c_str();
-            //root.append(data);
-            root["data"] = data;
-
-            //jsonConverted.push_back(root);
-            toSend = root.toStyledString();
-            jsonConverted.push_back(toSend);
-        }
-        else
-        {
-            for (size_t c = 0; c < jsonConverted.size(); c++)
-            {
-                //if()
-            }
-        }
+//    if(planes.empty())
+//    {
+//    }
+//
+    root["Hexideimal"] = info.at(c).hexID;
+    root["lat"] = info.at(c).latitude;
+    root["long"] = info.at(c).longitute;
+    root["altitude"] = info.at(c).verticalHeading;
+    root["speed"] = info.at(c).groundSpeed;
+    root["heading"] = info.at(c).trueHeading;
 
 
+    //root["data"] = data;
 
-    }
+    prepToSend = root.toStyledString();
 
+    std::cout << prepToSend << std::endl;
 
-    for (size_t i = 0; i < jsonConverted.size(); i++)
-    {
-        //toSend = jsonConverted.at(i).toStyledString();
-        std::cout << jsonConverted.at(i) << std::endl;
-    }
-
-    //toSend = root.toStyledString();
-
-    //std::cout << root << std::endl;
-
-
+    return prepToSend;
 }
 
 

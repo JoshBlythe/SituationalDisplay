@@ -20,12 +20,11 @@ public:
     SendData();
     ~SendData();
 
-    void convertData();
-    void sendData();
+    void sendData(PlaneManager &aircrafts);
 
 private:
     WsTcpSocket *server;
-    PlaneManager *aircraftData;
+    PlaneManager aircraftData;
 
     //PlaneManager planeData;
     //WsServer* server;

@@ -7,12 +7,18 @@
 struct PlaneData
 {
     std::string hexID;
-    double latitude;
-    double longitute;
-    int groundSpeed;
-    int trueHeading;
-    int verticalHeading;
-    int airborneState;
+    std::string latitude;
+//    double latitude;
+    std::string longitute;
+//    double longitute;
+    std::string groundSpeed;
+//    int groundSpeed;
+    std::string trueHeading;
+//    int trueHeading;
+    std::string verticalHeading;
+//    int verticalHeading;
+    std::string airborneState;
+//    int airborneState;
 };
 
 PlaneData StoreData(std::vector<std::string> &info);

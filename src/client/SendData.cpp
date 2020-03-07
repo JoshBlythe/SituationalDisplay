@@ -8,6 +8,8 @@
 
 SendData::SendData()
 {
+
+
     server = WsTcpListen(SERVER_PORT);
 
     if(!server)
@@ -24,8 +26,9 @@ SendData::~SendData()
     WsTcpSocketClose(server);
 }
 
-void SendData::sendData()
+void SendData::sendData(PlaneManager &aircrafts)
 {
+    aircraftData = aircrafts;
     //test without dump1090 data
 //    std::vector<std::string> testingString;
 
@@ -41,7 +44,7 @@ void SendData::sendData()
 
     //PlaneManager aircraftData;
 
-    if(aircraftData->jsonConverted.empty())
+    if(aircraftData.planes.empty())
     {
         return;
     }
@@ -86,20 +89,34 @@ void SendData::sendData()
 
         //size_t length = aircraftData.toSend.size();
 
-        for (size_t i = 0; i < aircraftData->jsonConverted.size(); i++)
+        for (size_t i = 0; i < aircraftData.planes.size(); i++)
         {
-            //set the current variable to be the current string in the vector
-            std::string cur = aircraftData->jsonConverted.at(i);
+            std::string current = aircraftData.convertData(aircrafts.planes, i);
 
-            //loop though the lenght of the string
-            for (size_t c = 0; c < cur.size(); c++)
+            for(size_t c = 0; c < current.size(); c++)
             {
-                //get each character in the sting
-                sc = cur.at(c);
-                //push data into vector to send to client
+                sc = current.at(c);
                 vector_push_back(data, sc);
+
             }
+
         }
+
+
+//        for (size_t i = 0; i < aircraftData->jsonConverted.size(); i++)
+//        {
+//            //set the current variable to be the current string in the vector
+//            std::string cur = aircraftData->jsonConverted.at(i);
+
+//            //loop though the lenght of the string
+//            for (size_t c = 0; c < cur.size(); c++)
+//            {
+//                //get each character in the sting
+//                sc = cur.at(c);
+//                //push data into vector to send to client
+//                vector_push_back(data, sc);
+//            }
+//        }
 
 //        size_t lenght = 0;
 //        lenght = testingString.size();

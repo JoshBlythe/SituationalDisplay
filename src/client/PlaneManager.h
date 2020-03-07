@@ -30,7 +30,7 @@ public:
     void AddNewData(std::vector<std::string> &info);
     void UpdateData(std::vector<std::string> &info);
 
-    void convertData();
+    std::string convertData(std::vector<PlaneData> info, size_t c);
 
 private:
       friend class SendData;
@@ -46,8 +46,8 @@ private:
       //std::vector<unsigned char> _buffer;
       std::vector<unsigned char> stream;
       //std::vector<std::string> _tokens;
-      std::string message;
-      std::string toSend;
+      //std::string message;
+      //std::string toSend;
 
       std::vector<PlaneData> planes;
       std::vector<std::string> jsonConverted;
