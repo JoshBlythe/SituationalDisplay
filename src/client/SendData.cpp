@@ -88,11 +88,12 @@ void SendData::sendData(PlaneManager &aircrafts)
 
 
         //size_t length = aircraftData.toSend.size();
+        size_t i = 0;
+        std::string current;
 
-        for (size_t i = 0; i < aircraftData.planes.size(); i++)
+        for (i = 0; i < aircraftData.planes.size(); i++)
         {
-            std::string current = aircraftData.convertData(aircrafts.planes, i);
-
+            current = aircraftData.convertData(aircrafts.planes, i);
             for(size_t c = 0; c < current.size(); c++)
             {
                 sc = current.at(c);
@@ -100,8 +101,15 @@ void SendData::sendData(PlaneManager &aircrafts)
 
             }
 
+            WsTcpSocketSend(clientConnected, data);
+            //WsTcpSocketClose(clientConnected);
+            current.clear();
+            //;
         }
 
+
+    }
+}
 
 //        for (size_t i = 0; i < aircraftData->jsonConverted.size(); i++)
 //        {
@@ -133,11 +141,8 @@ void SendData::sendData(PlaneManager &aircrafts)
 
 //        }
 
-        WsTcpSocketSend(clientConnected, data);
-
-
-    }
-}
+        //works
+        //WsTcpSocketSend(clientConnected, data);
 
 
 

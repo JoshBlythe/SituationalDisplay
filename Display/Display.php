@@ -10,6 +10,7 @@
       }
     </style>
 
+    <script src="canvas.js"></script>
     <script src="OpenLayers.light.js"></script>
     <script>
       function init()
@@ -19,6 +20,7 @@
             var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
             var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
             var position = new OpenLayers.LonLat(13.41,52.52).transform( fromProjection, toProjection);
+            //set zoom
             var zoom = 4;
 
             map.addLayer(mapnik);
@@ -37,9 +39,11 @@
 
 <p id="demo"></p>
 
-<canvas id="canvasID" width="240" height="297" style="border:1px solid #d3d3d3;">
+<!-- <canvas id="canvasID" width="240" height="297" style="border:1px solid #d3d3d3;">
 Your browser does not support the HTML5 canvas tag.
-</canvas>
+</canvas> -->
+
+<div id="basicMap" class="smallmap"></div>
 
 <div id="basicMap"></div>
 

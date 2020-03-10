@@ -22,11 +22,11 @@
 
       $JsonObj = json_encode($result);
 
+      // echo $JsonObj;
+      echo $result;
+
 
       socket_close($socket);
-
-      echo $JsonObj;
-      //echo $result;
       //return $result;
 
     //}    
