@@ -50,43 +50,7 @@ void PlaneManager::StateProcessPacket()
     //call update function
     UpdateData(token);
 
-    //output the stored infomation
-        //printf("[%s]\n", packet.c_str());
-//        for (size_t i = 0; i < planes.size(); i++)
-//        {
-//            std::cout << planes.size() << std::endl;
-//            printf("[%s]\n", planes.at(i).hexID.c_str());
-//            printf("[%s]\n", planes.at(i).verticalHeading.c_str());
-//            printf("[%s]\n", planes.at(i).groundSpeed.c_str());
-//            std::cout << "["<< planes.at(i).latitude << "]" << std::endl;
-//            std::cout << "["<< planes.at(i).longitute << "]" << std::endl;
-//            //printf("[%f]\n", planes.at(i).latitude);
-//            //printf("[%f]\n", planes.at(i).longitute);
-//            printf("[%s]\n", planes.at(i).trueHeading.c_str());
-//            printf("[%s]\n", planes.at(i).airborneState.c_str());
-
-//        }
-
-    //TODO:
-    //The first two section read in are the Message type (MSG,AIR, ID)
-    //then the Transmittion type (1-8) this is what helps us get the below fields.
-    // 1. Add each hex ID to a vector,
-    // 2. for each hex ID there will need to be,
-        //2a. Position data (latitude and longitude)
-                //comes in through MSG 2/3
-        //2b. Altitude data
-                //comes in through MSG 2/3/5/7
-        //2c. Ground speed data
-                //comes in through MSG 2/4
-        //2d. true heading
-                //comes in through MSG (need to find out)
-        //2e. Vertical Rate
-                //comes in through MSG 4
-        //2f. Airborne State (this comes in from is on ground)
-                //comes in through MSG 2/3/5/6/7/8
-
-
-        //if not had data from plane in X amount of messages remove from vector.
+    //if not had data from plane in X amount of messages remove from vector.
 
 }
 

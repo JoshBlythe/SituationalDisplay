@@ -26,10 +26,11 @@ private:
     WsTcpSocket *server;
     PlaneManager aircraftData;
 
-    //PlaneManager planeData;
-    //WsServer* server;
     vector(unsigned char) data;
-    //char *maybe;
+
+    size_t a;
+    //std::string current;
+
 
 
 };

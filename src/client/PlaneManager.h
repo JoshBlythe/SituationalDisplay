@@ -29,6 +29,7 @@ public:
     void StoreData(std::vector<std::string> &info);
     void AddNewData(std::vector<std::string> &info);
     void UpdateData(std::vector<std::string> &info);
+    void RemoveData(std::vector<std::string> &info);
 
     std::string convertData(std::vector<PlaneData> info, size_t c);
 

@@ -19,6 +19,8 @@ SendData::SendData()
     }
 
     data = vector_new(unsigned char);
+    a = 0;
+
 }
 
 SendData::~SendData()
@@ -28,21 +30,10 @@ SendData::~SendData()
 
 void SendData::sendData(PlaneManager &aircrafts)
 {
+    //get a context of current aircraft/ passing the data stored for each aircraft within
     aircraftData = aircrafts;
-    //test without dump1090 data
-//    std::vector<std::string> testingString;
-
-//    std::string please = "name: ";
-
-//    for (int i = 0; i < 5; i++)
-//    {
-//       please[3] = i;
-//       testingString.push_back(please);
-//    }
 
     char sc = 0;
-
-    //PlaneManager aircraftData;
 
     if(aircraftData.planes.empty())
     {
@@ -86,46 +77,41 @@ void SendData::sendData(PlaneManager &aircrafts)
         printf("Client Connected\n");
         clientConnected = WsTcpSocketAccept(socket);
 
-
-        //size_t length = aircraftData.toSend.size();
-        size_t i = 0;
+        //create string to store values
         std::string current;
+        current = aircraftData.convertData(aircrafts.planes, a);
 
-        for (i = 0; i < aircraftData.planes.size(); i++)
+        std::cout << current << std::endl;
+
+        for(size_t c = 0; c < current.size(); c++)
         {
-            current = aircraftData.convertData(aircrafts.planes, i);
-            for(size_t c = 0; c < current.size(); c++)
-            {
-                sc = current.at(c);
-                vector_push_back(data, sc);
+            sc = current.at(c);
+            vector_push_back(data, sc);
 
-            }
-
-            WsTcpSocketSend(clientConnected, data);
-            //WsTcpSocketClose(clientConnected);
-            current.clear();
-            //;
         }
 
+        WsTcpSocketSend(clientConnected, data);
 
+
+        if(a == aircraftData.planes.size())
+        {
+            a = 0;
+        }
+        else if (a < aircraftData.planes.size())
+        {
+            a++;
+            std::cout << a << std::endl;
+            if(a == aircraftData.planes.size())
+            {
+                a = 0;
+            }
+        }
     }
 }
 
-//        for (size_t i = 0; i < aircraftData->jsonConverted.size(); i++)
-//        {
-//            //set the current variable to be the current string in the vector
-//            std::string cur = aircraftData->jsonConverted.at(i);
 
-//            //loop though the lenght of the string
-//            for (size_t c = 0; c < cur.size(); c++)
-//            {
-//                //get each character in the sting
-//                sc = cur.at(c);
-//                //push data into vector to send to client
-//                vector_push_back(data, sc);
-//            }
-//        }
 
+/////////////////////////////////////////////////////
 //        size_t lenght = 0;
 //        lenght = testingString.size();
 
@@ -143,6 +129,25 @@ void SendData::sendData(PlaneManager &aircrafts)
 
         //works
         //WsTcpSocketSend(clientConnected, data);
+
+
+//        size_t i = 0;
+//        //size_t a = 0;
+//          std::string current;
+
+//        for (i = 0; i < aircraftData.planes.size(); i++)
+//        {
+//            current = aircraftData.convertData(aircrafts.planes, i);
+//            for(size_t c = 0; c < current.size(); c++)
+//            {
+//                sc = current.at(c);
+//                vector_push_back(data, sc);
+
+//            }
+
+//            WsTcpSocketSend(clientConnected, data);
+
+//        }
 
 
 

@@ -2,10 +2,23 @@
  <!-- followed guide to Display map https://switch2osm.org/using-tiles/getting-started-with-leaflet/ -->
 <html>
   <head>
-  	<title>Testing leaflet</title>
+  	<title>Visual Display</title>
 <style type="text/css">
-	#map{ height: 800px; }
+	body {padding: 0; margin: 0;}
+            html, body, #map {height: 100%;}
+
+            .clock{
+              width: 150px;
+              text-align: center;
+              position: absolute;
+              border: 1px solid black;
+            }
+            #clock-display
+            {
+              background-color: green;
+            }
 </style>
+<!-- Enables map to be drawn and initalised -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -15,29 +28,155 @@
  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
    crossorigin=""></script>
+
+   <!-- enables the setRotationAngle function -->
+  <script src="https://cdn.leafletjs.com/leaflet/v1.1.0/leaflet-src.js"></script>
+  <script src="leaflet.rotatedMarker.js"></script> 
+  <!-- Enable measurement -->
+  <link rel="stylesheet" href="Leaflet.PolylineMeasure.css" />
+  <script src="Leaflet.PolylineMeasure.js"></script>
+
+  <!-- ToolTip draggable -->
+  <script src="Tooltip.js"></script>
+  <script src="Tooltip.Drag.js"></script>
+
 <head>
-
-
 </head>
 	<body>
-      <p id="data"></p>
-      <p id="demo"></p>
+    <!-- creates the maps display -->
 		 <div id="map">
-       
-     </div>
-     <div ></div>
+
+      <!-- currently displays the clock at top right, TODO change to center -->
+      <div id="clock-display" class="clock leaflet-bar leaflet-top leaflet-right">
+          00-00-00
+      </div>
+
+      <!-- creates the zoom buttons -->
+       <div class="leaflet-top leaflet-left">
+        <div class="leaflet-control-zoom leaflet-bar leaflet-control">
+          <a class="leaflet-control-zoom-in" href="#" title="Zoom in" role="button" aria-label="Zoom in">+</a>
+          <a class="leaflet-control-zoom-out" href="#" title="Zoom out" role="button" aria-label="Zoom out">−</a>
+        </div>
+        <!-- creates the bearing and range tool buttons -->
+        <div class="leaflet-bar leaflet-control">
+          <a title="Turn on PolylineMeasure" class="polyline-measure-unicode-icon" id="polyline-measure-control">↦</a>
+          <a title="Clear Measurements" class="polyline-measure-unicode-icon polyline-measure-clearControl" >×</a>
+        </div>
+      </div>
+    </div>
 
   <script type="text/javascript">
-      var myObj;
-      // var planes;
+  //array which stores planes
+  var storedPlanes = [];
+  // var isDrawn = false;
 
-      if(myObj === undefined)
+  //aircraft icon
+  var planeIcon = L.Icon.extend({
+    options: {
+    iconSize: [20, 25],
+    rotationAngle: 180    
+    }
+  });
+  
+  var aircraft1 = new planeIcon({iconUrl: '/img/plane2.png'});
+
+    function getData()
+    {
+      var xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function()
       {
-        getData();
-      }
+        if (this.readyState == 4 && this.status == 200) 
+        {          
+          //get the data from php file
+          var myObj = JSON.parse(this.responseText);
+
+          //stores/update the current data
+          UpdateStoredPlanes(myObj);
+          //update aircraft position and 
+          UpdatePlane();
+          //draws the aircraft
+          drawplane();          
+        }
+      };
+
+      xmlhttp.open("GET", "clientPHP.php", true);
+      xmlhttp.send();
+    }
+
+    function UpdateStoredPlanes(data)
+    {
+          for (i = 0; i < storedPlanes.length; i++)
+          {
+            // document.getElementById("demo").innerHTML = storedPlanes[i].Hexideimal + " " + storedPlanes[i].lat + " " + storedPlanes[i].long + " " + storedPlanes.length;
+            
+            if(data.Hexideimal === storedPlanes[i].Hexideimal)
+            {
+              //UpdateData();
+              storedPlanes[i].altitude = data.altitude;
+              storedPlanes[i].heading = data.heading;
+              storedPlanes[i].lat = data.lat;
+              storedPlanes[i].long = data.long;
+              storedPlanes[i].speed = data.speed;
+
+              return;
+            }
+
+          }
+
+          storedPlanes.push(data);
+    } 
+
+
+
+    function drawplane()
+    {
+          for (var i = 0; i < storedPlanes.length; i++) 
+          {
+            //Stores the aicraft track
+            var planeDisplayAngle;
+
+            //convert the data to string to present
+            //testing commmented out to see if still displays
+            var planeHex = storedPlanes[i].Hexideimal.toString();
+            var planeAltitude = storedPlanes[i].altitude.toString();
+            var planeHeading = storedPlanes[i].heading.toString();
+            var planeLat = storedPlanes[i].lat.toString();
+            var planeLong = storedPlanes[i].long.toString();
+            var planeSpeed = storedPlanes[i].speed.toString();
+
+            //create the aircraft icon (image) and displays it information
+            storedPlanes[i].icon = L.marker([storedPlanes[i].lat , storedPlanes[i].long], {icon: aircraft1})
+            .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>H: " + planeHeading + " " + "S: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6})
+            .addTo(layerControl);
+
+            //gets and stores the aircrafts heading
+            planeDisplayAngle = storedPlanes[i].heading;
+            //rotates the aircraft icon to the correct heading.
+            storedPlanes[i].icon.setRotationAngle(planeDisplayAngle);
+          }
+    
+    }
+
+    function UpdatePlane()
+    {
+      //clear current layer
+       layerControl.clearLayers();
+       //redraw the aircraft icon
+        drawplane();
+    }
+
+    function UpdateClock()
+    {
+      //this gets the current utc time
+      var date = new Date().toISOString();
+      //updates the html div with the current UTC time
+      document.getElementById("clock-display").innerHTML = date;
+    }
+
 
       // initialize Leaflet
-      var map = L.map('map').setView({lon: -1.8808, lat: 50.7192}, 10);
+      var map = L.map('map').setView({lon: -1.8808, lat: 50.7192}, 9);
 
       // add the OpenStreetMap tiles
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
@@ -50,93 +189,26 @@
       // show the scale bar on the lower left corner
       L.control.scale().addTo(map);    
 
+      // var utcdisplay = L.control.messagebox().addTo(map);
+      // utcdisplay.show(date);
+
       var layerControl = L.layerGroup().addTo(map);
+      var newlayerControl = L.layerGroup().addTo(map);
 
+      //Enables the bearing and range tools
+      let polylineMeasure = L.control.polylineMeasure ({position:'topleft', unit:'metres', showBearings:true, clearMeasurementsOnStop: false, showClearControl: true, showUnitControl: true})
+            polylineMeasure.addTo (map);
 
-
-    function getData()
-    {
-
-      var xmlhttp = new XMLHttpRequest();
-
-      xmlhttp.onreadystatechange = function()
-      {
-        if (this.readyState == 4 && this.status == 200) 
-        {          
-          myObj = JSON.parse(this.responseText);
-          document.getElementById("data").innerHTML = myObj;
-
-          document.getElementById("demo").innerHTML = myObj.Hexideimal + " " + myObj.altitude + " " + myObj.lat + " " + myObj.long;
-        }
-      };
-
-      xmlhttp.open("GET", "clientPHP.php", true);
-      xmlhttp.send();
-
-      //drawplane(myObj);
-    }
-
-    function drawplane()
-    {
-      // var pos = {lat:"50.7192", long:"1.8808"};
-
-     var myIcon = L.icon({
-    iconUrl: '/img/plane.jpg',
-    iconSize: [20, 25],
-    iconAngle: 40,
-    
-    });
-    L.marker([myObj.lat , myObj.long], {icon: myIcon}).addTo(layerControl);
-    
-    // myIcon = planes;
-
-    // map.removLayer(myIcon);
-    }
-
-
-    function UpdatePlane()
-    {
-      // planes.setLatLong([myObj.lat , myObj.long]).update();
-      // planes.setIconAngle(30);
-      layerControl.clearLayers();
-    }
 
     window.setInterval(function()
     {
         getData();
-        drawplane();
+        UpdateClock();
         // UpdatePlane();
-    }, 1000);
+        // drawplane();
+    }, 500);
 
 	</script>
-
-<!--   <script type="text/javascript">
-
-    function getData()
-    {
-
-      var xmlhttp = new XMLHttpRequest();
-
-      xmlhttp.onreadystatechange = function()
-      {
-        if (this.readyState == 4 && this.status == 200) 
-        {          
-          var myObj = JSON.parse(this.responseText);
-          document.getElementById("data").innerHTML = JSON.stringify(myObj);
-
-          document.getElementById("demo").innerHTML = myObj.heading;
-        }
-      };
-
-      xmlhttp.open("GET", "clientPHP.php", true);
-      xmlhttp.send();
-    }
-
-    window.setInterval(function()
-    {
-        getData();
-    }, 1000);
-  </script> -->
 	</body>
 
 
