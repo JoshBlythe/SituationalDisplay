@@ -17,6 +17,10 @@
             {
               background-color: green;
             }
+            #clock-notdefined
+            {
+              background-color: red;
+            }
 </style>
 <!-- Enables map to be drawn and initalised -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
@@ -47,8 +51,8 @@
 		 <div id="map">
 
       <!-- currently displays the clock at top right, TODO change to center -->
-      <div id="clock-display" class="clock leaflet-bar leaflet-top leaflet-right">
-          00-00-00
+      <div id="clock-notdefined" class="clock leaflet-bar leaflet-top leaflet-right">
+        00-00-00
       </div>
 
       <!-- creates the zoom buttons -->
@@ -77,7 +81,14 @@
     rotationAngle: 180    
     }
   });
+
+  var notRecieving = L.Icon.extend({
+    options: {
+      iconSize: [10,15]
+    }
+  });
   
+  //set aircraft icon
   var aircraft1 = new planeIcon({iconUrl: '/img/plane2.png'});
 
     function getData()
@@ -148,7 +159,7 @@
             //create the aircraft icon (image) and displays it information
             storedPlanes[i].icon = L.marker([storedPlanes[i].lat , storedPlanes[i].long], {icon: aircraft1})
             .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>H: " + planeHeading + " " + "S: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6})
-            .addTo(layerControl);
+            .addTo(aircraftLayer);
 
             //gets and stores the aircrafts heading
             planeDisplayAngle = storedPlanes[i].heading;
@@ -161,17 +172,20 @@
     function UpdatePlane()
     {
       //clear current layer
-       layerControl.clearLayers();
+       aircraftLayer.clearLayers();
        //redraw the aircraft icon
         drawplane();
     }
 
     function UpdateClock()
     {
+      document.getElementById("clock-notdefined").style.backgroundColor = "green";
       //this gets the current utc time
       var date = new Date().toISOString();
       //updates the html div with the current UTC time
-      document.getElementById("clock-display").innerHTML = date;
+
+      document.getElementById("clock-notdefined").innerHTML = date;
+
     }
 
 
@@ -192,7 +206,7 @@
       // var utcdisplay = L.control.messagebox().addTo(map);
       // utcdisplay.show(date);
 
-      var layerControl = L.layerGroup().addTo(map);
+      var aircraftLayer = L.layerGroup().addTo(map);
       var newlayerControl = L.layerGroup().addTo(map);
 
       //Enables the bearing and range tools
@@ -202,10 +216,10 @@
 
     window.setInterval(function()
     {
+        //call the function to obtain data (will also draw aircraft, thier labels and update them)
         getData();
+        //call the function to set the UTC Time, also will update the label colour showing it has been set.
         UpdateClock();
-        // UpdatePlane();
-        // drawplane();
     }, 500);
 
 	</script>

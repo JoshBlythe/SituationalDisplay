@@ -19,6 +19,8 @@ struct PlaneData
 //    int verticalHeading;
     std::string airborneState;
 //    int airborneState;
+    bool isAircraft;
+    int checkAircraft;
 };
 
 PlaneData StoreData(std::vector<std::string> &info);

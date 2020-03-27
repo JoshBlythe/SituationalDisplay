@@ -8,8 +8,6 @@
 
 SendData::SendData()
 {
-
-
     server = WsTcpListen(SERVER_PORT);
 
     if(!server)
@@ -39,6 +37,8 @@ void SendData::sendData(PlaneManager &aircrafts)
     {
         return;
     }
+
+    //aircraftData.RemoveData(a);
 
     struct WsTcpSocket *socket = NULL;
     struct WsTcpSocket *clientConnected = NULL;
@@ -79,10 +79,11 @@ void SendData::sendData(PlaneManager &aircrafts)
 
         //create string to store values
         std::string current;
-        current = aircraftData.convertData(aircrafts.planes, a);
+        current = aircraftData.convertData(a);
 
-        std::cout << current << std::endl;
+        //std::cout << current << std::endl;
 
+        //push data into a vector of format type which is able to be sent via the socket
         for(size_t c = 0; c < current.size(); c++)
         {
             sc = current.at(c);
@@ -90,6 +91,7 @@ void SendData::sendData(PlaneManager &aircrafts)
 
         }
 
+        //send the data via a tcp socket (to clientConnected socket)
         WsTcpSocketSend(clientConnected, data);
 
 
@@ -100,12 +102,15 @@ void SendData::sendData(PlaneManager &aircrafts)
         else if (a < aircraftData.planes.size())
         {
             a++;
+
             std::cout << a << std::endl;
             if(a == aircraftData.planes.size())
             {
                 a = 0;
             }
         }
+
+        //aircraftData.RemoveData(a);
     }
 }
 

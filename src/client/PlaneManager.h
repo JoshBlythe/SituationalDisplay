@@ -2,6 +2,7 @@
 #define _PLANEMANAGER_H
 
 #include <vector>
+#include <algorithm>
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -29,9 +30,9 @@ public:
     void StoreData(std::vector<std::string> &info);
     void AddNewData(std::vector<std::string> &info);
     void UpdateData(std::vector<std::string> &info);
-    void RemoveData(std::vector<std::string> &info);
+    void RemoveData();
 
-    std::string convertData(std::vector<PlaneData> info, size_t c);
+    std::string convertData(size_t c);
 
 private:
       friend class SendData;
@@ -46,9 +47,7 @@ private:
       std::string packet;
       //std::vector<unsigned char> _buffer;
       std::vector<unsigned char> stream;
-      //std::vector<std::string> _tokens;
-      //std::string message;
-      //std::string toSend;
+      int value;
 
       std::vector<PlaneData> planes;
       std::vector<std::string> jsonConverted;
