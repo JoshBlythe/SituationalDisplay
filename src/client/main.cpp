@@ -34,12 +34,13 @@ int main(int argv, char* argc[])
                 _running = false;
             }
         }
-        //obtain data from dump1090 server/ seperate it and store it
-        manger.StateProcessNetwork();
-        //manger.convertData();
+        //obtain data from dump1090 server/seperate it and store it
+//        manger.StateProcessNetwork();
+        manger.StateProcessPacket();
 
         //send the data via tcp server to web application
         httpSend->sendData(manger);
+        manger.RemoveData();
     }
 
     return 0;

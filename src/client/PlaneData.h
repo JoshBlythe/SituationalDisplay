@@ -23,9 +23,9 @@ struct PlaneData
     int checkAircraft;
 };
 
-PlaneData StoreData(std::vector<std::string> &info);
-PlaneData UpdateData(std::vector<std::string> &info);
-PlaneData AddNewData(std::vector<std::string> &info);
+//PlaneData StoreData(std::vector<std::string> &info);
+//PlaneData UpdateData(std::vector<std::string> &info);
+//PlaneData AddNewData(std::vector<std::string> &info);
 //class PlaneData
 //{
 //public:

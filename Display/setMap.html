@@ -3,6 +3,8 @@
 <html>
   <head>
   	<title>Visual Display</title>
+
+<!-- set the styles to be to used later -->
 <style type="text/css">
 	body {padding: 0; margin: 0;}
             html, body, #map {height: 100%;}
@@ -22,6 +24,7 @@
               background-color: red;
             }
 </style>
+
 <!-- Enables map to be drawn and initalised -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
@@ -90,7 +93,9 @@
   
   //set aircraft icon
   var aircraft1 = new planeIcon({iconUrl: '/img/plane2.png'});
+  var noAircraftData = new notRecieving({iconUrl: 'img/NotReceiving.png'});
 
+    // main loop functions (obtains the data and display/updates the aircraft)
     function getData()
     {
       var xmlhttp = new XMLHttpRequest();
@@ -107,7 +112,20 @@
           //update aircraft position and 
           UpdatePlane();
           //draws the aircraft
-          drawplane();          
+          drawplane();
+
+
+          // TODO: remove aircraft after once recAircraft = 59
+          for (var i = 0; i < storedPlanes.length; i++) 
+          {
+            //console.log(storedPlanes.length);
+            
+            if (storedPlanes[i].recAircraft === 59) 
+            {
+              storedPlanes.splice(i, 1);
+              //console.log(storedPlanes.length);
+            }
+          }          
         }
       };
 
@@ -115,26 +133,33 @@
       xmlhttp.send();
     }
 
+    //update the aircraft data
     function UpdateStoredPlanes(data)
     {
+          //loop through aircraft stored
           for (i = 0; i < storedPlanes.length; i++)
           {
             // document.getElementById("demo").innerHTML = storedPlanes[i].Hexideimal + " " + storedPlanes[i].lat + " " + storedPlanes[i].long + " " + storedPlanes.length;
             
+            //check if the read in aircraft hex id is the same as one of the stored aircraft
             if(data.Hexideimal === storedPlanes[i].Hexideimal)
             {
-              //UpdateData();
+              // if true then update its data
               storedPlanes[i].altitude = data.altitude;
               storedPlanes[i].heading = data.heading;
               storedPlanes[i].lat = data.lat;
               storedPlanes[i].long = data.long;
               storedPlanes[i].speed = data.speed;
+              storedPlanes[i].recievedData = data.aircraftFound;
+              storedPlanes[i].state = data.recAircraft;
 
+              //early exit out of function, as aircraft data has been updated
               return;
             }
 
           }
 
+          //if the data hex id isn't stored then its a new aircraft and needs to be added to the array.
           storedPlanes.push(data);
     } 
 
@@ -156,19 +181,38 @@
             var planeLong = storedPlanes[i].long.toString();
             var planeSpeed = storedPlanes[i].speed.toString();
 
-            //create the aircraft icon (image) and displays it information
-            storedPlanes[i].icon = L.marker([storedPlanes[i].lat , storedPlanes[i].long], {icon: aircraft1})
-            .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>H: " + planeHeading + " " + "S: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6})
-            .addTo(aircraftLayer);
+            if(storedPlanes[i].recievedData === true)
+            {
+              //create the aircraft icon (image) and displays it information
+              storedPlanes[i].icon = L.marker([storedPlanes[i].lat , storedPlanes[i].long], {icon: aircraft1})
+              .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>H: " + planeHeading + " " + "S: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6})
+              .addTo(aircraftLayer);
 
-            //gets and stores the aircrafts heading
-            planeDisplayAngle = storedPlanes[i].heading;
-            //rotates the aircraft icon to the correct heading.
-            storedPlanes[i].icon.setRotationAngle(planeDisplayAngle);
+              //gets and stores the aircrafts heading
+              planeDisplayAngle = storedPlanes[i].heading;
+              //rotates the aircraft icon to the correct heading.
+              storedPlanes[i].icon.setRotationAngle(planeDisplayAngle);
+
+            }
+            else if (storedPlanes[i].recievedData === false) 
+            {
+              //create the aircraft icon (image) and displays it information
+              storedPlanes[i].icon = L.marker([storedPlanes[i].lat , storedPlanes[i].long], {icon: noAircraftData})
+              .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>H: " + planeHeading + " " + "S: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6})
+              .addTo(aircraftLayer);
+
+              //gets and stores the aircrafts heading
+              planeDisplayAngle = storedPlanes[i].heading;
+              //rotates the aircraft icon to the correct heading.
+              storedPlanes[i].icon.setRotationAngle(planeDisplayAngle);
+            }
+
+
           }
     
     }
 
+    //function to update aircraft current position
     function UpdatePlane()
     {
       //clear current layer
@@ -224,8 +268,4 @@
 
 	</script>
 	</body>
-
-
-
 </html>
-

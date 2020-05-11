@@ -47,7 +47,7 @@ private:
       std::string packet;
       //std::vector<unsigned char> _buffer;
       std::vector<unsigned char> stream;
-      int value;
+//      int value;
 
       std::vector<PlaneData> planes;
       std::vector<std::string> jsonConverted;

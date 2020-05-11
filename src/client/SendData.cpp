@@ -38,8 +38,6 @@ void SendData::sendData(PlaneManager &aircrafts)
         return;
     }
 
-    //aircraftData.RemoveData(a);
-
     struct WsTcpSocket *socket = NULL;
     struct WsTcpSocket *clientConnected = NULL;
 
@@ -77,6 +75,18 @@ void SendData::sendData(PlaneManager &aircrafts)
         printf("Client Connected\n");
         clientConnected = WsTcpSocketAccept(socket);
 
+        //testing
+//        aircraftData.RemoveData();
+
+//        if(a == aircraftData.planes.size())
+//        {
+//            a = 0;
+//        }
+//        if(a > aircraftData.planes.size())
+//        {
+//            a = 0;
+//        }
+
         //create string to store values
         std::string current;
         current = aircraftData.convertData(a);
@@ -109,9 +119,9 @@ void SendData::sendData(PlaneManager &aircrafts)
                 a = 0;
             }
         }
-
-        //aircraftData.RemoveData(a);
     }
+    //close client socket
+    WsTcpSocketClose(clientConnected);
 }
 
 
