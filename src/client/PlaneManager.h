@@ -20,25 +20,37 @@ struct PlaneData;
 class PlaneManager
 {
 public:
+    //class constructor
     PlaneManager();
+    //and destructor
     ~PlaneManager();
 
-    void displayADSBData();
-
+    //used to obtain the raw packets from the dump1090 server.
     void StateProcessNetwork();
+
+    //used to extract the aircraft data from the stored raw packets in stream. Then either stores or updates
+    //the planes vector of aircraft
     void StateProcessPacket();
+    //stores a aircraft
     void StoreData(std::vector<std::string> &info);
+    //adds a new aircraft
     void AddNewData(std::vector<std::string> &info);
+    //updates a stored aircraft data
     void UpdateData(std::vector<std::string> &info);
+
+    //removes a aircraft from the vector
     void RemoveData();
 
+
+    //converts the stored aircraft data to json format.
     std::string convertData(size_t c);
 
 private:
+      //friend class to sendData allows private vaiables to be accessed.
       friend class SendData;
 
+      // reference to WsTcpSocket, used to connect to dump1090 server.
       WsTcpSocket *client;
-      WsTcpSocket *SendData;
 
       vector(unsigned char) buffer;
       //vector(unsigned char) stream;
@@ -46,11 +58,11 @@ private:
       //vector(ref(sstream)) tokens;
       std::string packet;
       //std::vector<unsigned char> _buffer;
+      //vector of unsiged char to store the raw packets read from dump1090
       std::vector<unsigned char> stream;
-//      int value;
 
+      //vector of planes, stores type planeData (this is a struct which holds the read in aircraft data).
       std::vector<PlaneData> planes;
-      std::vector<std::string> jsonConverted;
 
 };
 

@@ -20,7 +20,7 @@ public:
     SendData();
     ~SendData();
 
-    void sendData(PlaneManager &aircrafts);
+    void SendAircraftInfo(PlaneManager &aircrafts);
 
 private:
     WsTcpSocket *server;

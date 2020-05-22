@@ -46,31 +46,33 @@ void PlaneManager::StateProcessPacket()
     //check if vector is empty
     if(planes.empty())
     {
-        //if is store the first plane
-//        StoreData(token);
+//        if is store the first plane
+        StoreData(token);
 
-    PlaneData aircraft;
 
-    aircraft.hexID = "9999";
-    aircraft.checkAircraft = 0;
-    aircraft.isAircraft = true;
-    aircraft.verticalHeading = "9999";
-    aircraft.groundSpeed = "9999";
-    aircraft.trueHeading = "9999";
-    aircraft.latitude = "50.7192";
-    aircraft.longitute = "-1.8808";
+//    used for testing of removed aircraft as aircraft wasnt able to be obtained
+//    PlaneData aircraft;
+//    aircraft.hexID = "9999";
+//    aircraft.checkAircraft = 0;
+//    aircraft.isAircraft = true;
+//    aircraft.verticalHeading = "9999";
+//    aircraft.groundSpeed = "9999";
+//    aircraft.trueHeading = "9999";
+//    aircraft.latitude = "50.7192";
+//    aircraft.longitute = "-1.8808";
 
-    planes.push_back(aircraft);
+//    planes.push_back(aircraft);
 
     }
 
     //could optimse this more, check the hex id here instead of going into the function to do it.
-//    AddNewData(token);
+    //takes in a reference to the vector which has the extracted aircraft data stored within.
+    AddNewData(token);
     //call update function
-//    UpdateData(token);
-//    RemoveData();
+    UpdateData(token);
+    RemoveData();
 
-    //testing
+//    testing the aircraft data was being stored
 //    for (size_t i = 0; i < planes.size(); i++)
 //    {
 //        std::cout << planes.at(i).hexID << std::endl;
@@ -134,8 +136,10 @@ void PlaneManager::AddNewData(std::vector<std::string> &info)
 
 void PlaneManager::UpdateData(std::vector<std::string> &info)
 {
+    //loop through the stored planes
     for (size_t i = 0; i < planes.size(); i++)
     {
+        //check if current aircraft hexID matches a stored aircraft.
         if(info.at(4) == planes.at(i).hexID)
         {
             planes.at(i).checkAircraft = 0;
@@ -201,6 +205,8 @@ void PlaneManager::UpdateData(std::vector<std::string> &info)
             return;
         }
     }
+
+
     //            for (size_t i = 0; i < info.size(); i++)
     //            {
     //                //std::cout << token.at(i) << std::endl;

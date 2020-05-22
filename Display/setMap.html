@@ -96,7 +96,7 @@
   var noAircraftData = new notRecieving({iconUrl: 'img/NotReceiving.png'});
 
     // main loop functions (obtains the data and display/updates the aircraft)
-    function getData()
+    function GetData()
     {
       var xmlhttp = new XMLHttpRequest();
 
@@ -112,7 +112,7 @@
           //update aircraft position and 
           UpdatePlane();
           //draws the aircraft
-          drawplane();
+          Drawplane();
 
 
           // TODO: remove aircraft after once recAircraft = 59
@@ -165,7 +165,7 @@
 
 
 
-    function drawplane()
+    function Drawplane()
     {
           for (var i = 0; i < storedPlanes.length; i++) 
           {
@@ -218,7 +218,7 @@
       //clear current layer
        aircraftLayer.clearLayers();
        //redraw the aircraft icon
-        drawplane();
+        Drawplane();
     }
 
     function UpdateClock()
@@ -261,7 +261,7 @@
     window.setInterval(function()
     {
         //call the function to obtain data (will also draw aircraft, thier labels and update them)
-        getData();
+        GetData();
         //call the function to set the UTC Time, also will update the label colour showing it has been set.
         UpdateClock();
     }, 500);

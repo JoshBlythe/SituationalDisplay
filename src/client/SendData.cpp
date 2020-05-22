@@ -26,7 +26,7 @@ SendData::~SendData()
     WsTcpSocketClose(server);
 }
 
-void SendData::sendData(PlaneManager &aircrafts)
+void SendData::SendAircraftInfo(PlaneManager &aircrafts)
 {
     //get a context of current aircraft/ passing the data stored for each aircraft within
     aircraftData = aircrafts;
@@ -75,9 +75,8 @@ void SendData::sendData(PlaneManager &aircrafts)
         printf("Client Connected\n");
         clientConnected = WsTcpSocketAccept(socket);
 
-        //testing
+//test
 //        aircraftData.RemoveData();
-
 //        if(a == aircraftData.planes.size())
 //        {
 //            a = 0;
@@ -123,46 +122,3 @@ void SendData::sendData(PlaneManager &aircrafts)
     //close client socket
     WsTcpSocketClose(clientConnected);
 }
-
-
-
-/////////////////////////////////////////////////////
-//        size_t lenght = 0;
-//        lenght = testingString.size();
-
-//        for (size_t i = 0; i < lenght; i++)
-//        {
-//            std::string curr = testingString[i];
-
-//            for (size_t c = 0; c < curr.size(); c++)
-//            {
-//                sc = curr.at(c);
-//                vector_push_back(data, sc);
-//            }
-
-//        }
-
-        //works
-        //WsTcpSocketSend(clientConnected, data);
-
-
-//        size_t i = 0;
-//        //size_t a = 0;
-//          std::string current;
-
-//        for (i = 0; i < aircraftData.planes.size(); i++)
-//        {
-//            current = aircraftData.convertData(aircrafts.planes, i);
-//            for(size_t c = 0; c < current.size(); c++)
-//            {
-//                sc = current.at(c);
-//                vector_push_back(data, sc);
-
-//            }
-
-//            WsTcpSocketSend(clientConnected, data);
-
-//        }
-
-
-
