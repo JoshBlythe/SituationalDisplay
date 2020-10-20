@@ -73,10 +73,15 @@
     </div>
 
   <script type="text/javascript">
+  
+  var setMapPos = 0;
+  var initLongPos = -1.904755;
+  var initLatPos = 50.720806;
+  // var initLongPos = 147.17972;
+  // var initLatPos = -9.44314;
+  
   //array which stores planes
   var storedPlanes = [];
-  // var isDrawn = false;
-
   //aircraft icon
   var planeIcon = L.Icon.extend({
     options: {
@@ -95,6 +100,9 @@
   var aircraft1 = new planeIcon({iconUrl: '/img/plane2.png'});
   var noAircraftData = new notRecieving({iconUrl: 'img/NotReceiving.png'});
 
+  // initialize Leaflet
+      var map = L.map('map').setView({lon: initLongPos, lat: initLatPos}, 12);
+
     // main loop functions (obtains the data and display/updates the aircraft)
     function GetData()
     {
@@ -107,25 +115,33 @@
           //get the data from php file
           var myObj = JSON.parse(this.responseText);
 
+          SetMapLocation(myObj);
+
+          // console.log(setMapPos);
+          // console.log(myObj.lat);
+          // console.log(myObj.long);
+          // console.log(myObj.aircraftFound)
+
           //stores/update the current data
           UpdateStoredPlanes(myObj);
           //update aircraft position and 
           UpdatePlane();
           //draws the aircraft
           Drawplane();
+          RemovePlanes();
 
 
           // TODO: remove aircraft after once recAircraft = 59
-          for (var i = 0; i < storedPlanes.length; i++) 
-          {
-            //console.log(storedPlanes.length);
+          // for (var i = 0; i < storedPlanes.length; i++) 
+          // {
+          //   //console.log(storedPlanes.length);
             
-            if (storedPlanes[i].recAircraft === 59) 
-            {
-              storedPlanes.splice(i, 1);
-              //console.log(storedPlanes.length);
-            }
-          }          
+          //   if (storedPlanes[i].recAircraft === 59) 
+          //   {
+          //     storedPlanes.splice(i, 1);
+          //     //console.log(storedPlanes.length);
+          //   }
+          // }          
         }
       };
 
@@ -133,11 +149,58 @@
       xmlhttp.send();
     }
 
+    function SetMapLocation(data)
+    {
+
+      if (data.lat === 0.0 || data.long === 0.0) 
+      {
+        console.log(data.lat);
+        console.log(data.long);
+        return;
+      }
+
+      else if (setMapPos === 0) 
+      {
+
+        initLatPos = data.lat;
+        initLongPos = data.long;
+
+        map.flyTo([initLatPos, initLongPos], 12);
+
+                          // console.log(initLatPos);
+                          // console.log(initLongPos);
+
+        setMapPos = 1;
+
+      }
+    }
+
+    function RemovePlanes()
+    {
+      
+      for(var i = 0; i < storedPlanes.length; i++)
+      {
+        console.log("Stored Aircraft Amount: ");
+        console.log(storedPlanes.length);
+        
+        console.log("recAircraft number: ");
+        console.log(storedPlanes[i].recAircraft);
+
+
+        if (storedPlanes[i].recAircraft === 30) 
+        {
+          delete storedPlanes[i];
+        }
+
+      }
+    }
+
+
     //update the aircraft data
     function UpdateStoredPlanes(data)
     {
           //loop through aircraft stored
-          for (i = 0; i < storedPlanes.length; i++)
+          for (var i = 0; i < storedPlanes.length; i++)
           {
             // document.getElementById("demo").innerHTML = storedPlanes[i].Hexideimal + " " + storedPlanes[i].lat + " " + storedPlanes[i].long + " " + storedPlanes.length;
             
@@ -161,6 +224,10 @@
 
           //if the data hex id isn't stored then its a new aircraft and needs to be added to the array.
           storedPlanes.push(data);
+          
+          var aircraftStored = storedPlanes.length;
+
+          console.log(aircraftStored);
     } 
 
 
@@ -185,7 +252,7 @@
             {
               //create the aircraft icon (image) and displays it information
               storedPlanes[i].icon = L.marker([storedPlanes[i].lat , storedPlanes[i].long], {icon: aircraft1})
-              .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>H: " + planeHeading + " " + "S: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6})
+              .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>Heading: " + planeHeading + " " + "Speed: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6, noWrap: true})
               .addTo(aircraftLayer);
 
               //gets and stores the aircrafts heading
@@ -196,9 +263,10 @@
             }
             else if (storedPlanes[i].recievedData === false) 
             {
+              // console.log("Aircraft Icon Change!...........")
               //create the aircraft icon (image) and displays it information
               storedPlanes[i].icon = L.marker([storedPlanes[i].lat , storedPlanes[i].long], {icon: noAircraftData})
-              .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>H: " + planeHeading + " " + "S: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6})
+              .bindTooltip("ID: " + planeHex + " " + "Alt: " + planeAltitude +  " " + "<br>Lat: " + planeLat + " " + "<br>Lng: " + planeLong + " " + "<br>H: " + planeHeading + " " + "S: " + planeSpeed, {permanent: true, draggable: true, offset: [-6,10], opacity:0.6, noWrap: true})
               .addTo(aircraftLayer);
 
               //gets and stores the aircrafts heading
@@ -233,14 +301,14 @@
     }
 
 
-      // initialize Leaflet
-      var map = L.map('map').setView({lon: -1.8808, lat: 50.7192}, 9);
+      // // initialize Leaflet
+      // var map = L.map('map').setView({lon: initLongPos, lat: initLatPos}, 12);
 
       // add the OpenStreetMap tiles
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
       {
         minZoom: 9,
-        maxZoom: 12,
+        maxZoom: 14,
         attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
       }).addTo(map);
 
@@ -264,7 +332,7 @@
         GetData();
         //call the function to set the UTC Time, also will update the label colour showing it has been set.
         UpdateClock();
-    }, 500);
+    }, 800);
 
 	</script>
 	</body>

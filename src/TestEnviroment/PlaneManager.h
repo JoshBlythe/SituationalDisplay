@@ -34,7 +34,7 @@ class PlaneManager
 public:
     //class constructor
     PlaneManager();
-    //and destructor
+    //destructor
     ~PlaneManager();
 
     //used to obtain the raw packets from the dump1090 server.
@@ -76,6 +76,11 @@ private:
       //vector of planes, stores type planeData (this is a struct which holds the read in aircraft data).
       std::vector<PlaneData> planes;
 
+      PlaneData aircraft;
+      PlaneData aircraft2;
+      PlaneData aircraft3;
+
+      int counter = 0;
 };
 
 #endif

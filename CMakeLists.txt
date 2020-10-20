@@ -38,6 +38,7 @@ add_executable(client
   src/client/Enviroment.h
   src/client/SendData.cpp
   src/client/SendData.h
+  src/client/PlaneData.h
 
 )
 
@@ -47,6 +48,33 @@ else()
   target_link_libraries(client inc SDL2 SDL2_image jsoncpp)
 endif()
 
+add_executable(TestEnviroment
+  src/TestEnviroment/main.cpp
+  src/TestEnviroment/TcpSocket.cpp
+  src/TestEnviroment/TcpSocket.h
+  src/TestEnviroment/PlaneManager.cpp
+  src/TestEnviroment/PlaneManager.h
+  src/TestEnviroment/Display.cpp
+  src/TestEnviroment/Display.h
+  src/TestEnviroment/Exception.cpp
+  src/TestEnviroment/Exception.h
+  src/TestEnviroment/SpriteRender.cpp
+  src/TestEnviroment/SpriteRender.h
+  src/TestEnviroment/Enviroment.cpp
+  src/TestEnviroment/Enviroment.h
+  src/TestEnviroment/SendData.cpp
+  src/TestEnviroment/SendData.h
+  src/TestEnviroment/ServerMessageEm.cpp
+  src/TestEnviroment/ServerMessageEm.h
+
+
+)
+
+if(WIN32)
+  target_link_libraries(TestEnviroment inc SDL2 SDL2_image jsoncpp ws2_32)
+else()
+  target_link_libraries(TestEnviroment inc SDL2 SDL2_image jsoncpp)
+endif()
 
 
 

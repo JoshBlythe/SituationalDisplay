@@ -75,12 +75,11 @@ void SendData::SendAircraftInfo(PlaneManager &aircrafts)
         printf("Client Connected\n");
         clientConnected = WsTcpSocketAccept(socket);
 
-        //make sure that data that doesnt exist or if has been removed isn't accessed.
+        //maybe put this before doing sending the message to solve the issue.
         if(a > (aircraftData.planes.size() - 1))
         {
             a = 0;
         }
-
         //create string to store values
         std::string current;
         current = aircraftData.convertData(a);
@@ -98,22 +97,29 @@ void SendData::SendAircraftInfo(PlaneManager &aircrafts)
         //send the data via a tcp socket (to clientConnected socket)
         WsTcpSocketSend(clientConnected, data);
 
-
-        if(a == aircraftData.planes.size())
-        {
-            a = 0;
-        }
-        else if (a < aircraftData.planes.size())
-        {
-            a++;
-
-            std::cout << a << std::endl;
-            if(a == aircraftData.planes.size())
-            {
-                a = 0;
-            }
-        }
     }
+
     //close client socket
     WsTcpSocketClose(clientConnected);
+
+    if(a == (aircraftData.planes.size() - 1))
+    {
+        a = 0;
+        return;
+    }
+    else if (a < (aircraftData.planes.size() - 1))
+    {
+        if(a == (aircraftData.planes.size() - 1))
+        {
+            a = 0;
+            return;
+        }
+        else
+        {
+            std::cout << a << std::endl;
+            a++;
+        }
+
+    }
+
 }

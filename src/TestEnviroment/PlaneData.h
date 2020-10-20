@@ -1,3 +1,6 @@
+#ifndef _PLANEDATA_
+#define _PLANEDATA_
+
 #include <iostream>
 #include <list>
 #include <vector>
@@ -20,7 +23,7 @@ struct PlaneData
     std::string airborneState;
 //    int airborneState;
     bool isAircraft;
-    int aircraftUpdated;
+    int checkAircraft;
 };
 
 //PlaneData StoreData(std::vector<std::string> &info);
@@ -31,3 +34,5 @@ struct PlaneData
 //public:
 //    std::list<PlaneInfo> planeData;
 //};
+
+#endif

@@ -1,9 +1,9 @@
 #include <memory>
-#include <SDL2/SDL.h>
+//#include <SDL2/SDL.h>
 
-//#include "PlaneManager.h"
 #include "Display.h"
 #include "SendData.h"
+#include "ServerMessageEm.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,10 +11,10 @@
 #include <unistd.h>
 #include <libwebsockets.h>
 
-//struct WsTcpSocket;
 
-int main(int argv, char* argc[])
+int main()
 {
+   ServerMessageEm *testServer = new ServerMessageEm();
    PlaneManager manger;
    SendData *httpSend = new SendData();
    //Display *display = new Display(argv, argc);
@@ -34,6 +34,9 @@ int main(int argv, char* argc[])
                 _running = false;
             }
         }
+
+        testServer->SetAircraftPos();
+        testServer->SendMessage();
 
         //obtain data from dump1090 server/seperate it and store it
 //        manger.StateProcessPacket();
